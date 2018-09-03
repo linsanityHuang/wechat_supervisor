@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>WeChat</title>
+		<script src="static/js/socket.io.js"></script>
+		<script src="static/js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+				var socket = io.connect('http://' + document.domain + ':' + location.port);
+				socket.on('connect', function() {
+						socket.emit('test_connect', {data: 'I\'m connected!'});
+				});
+
+				socket.on('test_message',function(message){
+						console.log(message);
+						var layui_timeline = $('#msg_table')
+						let type = message.data.split(':')[0]
+						let msg = ''
+						if (type == 'image') {
+							msg = '<img src="' + 'http://127.0.0.1:5000/static/' +message.data.split(':')[1] + '" height="200" width="200">'
+						}
+						else {
+							msg = message.data
+						}
+						let item = '<li class="layui-timeline-item">' +
+												'<div class="layui-timeline-content layui-text">' +
+												'<p>' + msg +'</p>' +
+												'</div>\n' +
+												'</li>'
+						layui_timeline.append(item)
+				});
+
+				socket.on('connected',function(){
+						console.log('connected');
+				});
+
+				socket.on('disconnect', function () {
+						console.log('disconnect');
+				});
+		</script>
+		<link rel="stylesheet" href="static/css/layui.css">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+	<div class="layui-header">
+		<div class="layui-logo">WeChat</div>
+		<!-- 头部区域（可配合layui已有的水平导航） -->
+		<ul class="layui-nav layui-layout-left">
+			<li class="layui-nav-item"><a >群消息</a></li>
+		</ul>
+		<ul class="layui-nav layui-layout-right">
+			<li class="layui-nav-item">
+				<!-- <a href="javascript:;">
+					<img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+					贤心
+				</a> -->
+			</li>
+			<li class="layui-nav-item"><input type="text" id="block_name" /></li>
+			<li class="layui-nav-item"><a id="block">屏蔽</a></li>
+		</ul>
+	</div>
+	
+	<div class="layui-side layui-bg-black">
+		<div class="layui-side-scroll">
+			<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+			<ul class="layui-nav layui-nav-tree"  lay-filter="test">
+				<li class="layui-nav-item layui-nav-itemed">
+					<a class="" href="javascript:;">已屏蔽关键字或用户</a>
+					<dl class="layui-nav-child">
+						{% for name in forbiden_name_list %}
+						<dd><a href="javascript:;">{{name}}</a></dd>
+						{% endfor %}
+					</dl>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="layui-body">
+		<!-- 内容主体区域 -->
+		<!-- <div style="padding: 15px;">内容主体区域</div> -->
+		<ul class="layui-timeline" id="msg_table"></ul>
+	</div>
+	
+	<!-- <div class="layui-footer">
+		底部固定区域
+		© layui.com - 底部固定区域
+	</div> -->
+</div>
+<script src="static/js/layui.js"></script>
+
+<script>
+	//JavaScript代码区域
+	layui.use('element', function(){
+		var element = layui.element;
+		
+	});
+	$('#block').on('click', function(){
+		let block_name = $('#block_name').val()
+		console.log(block_name)
+		$.get('http://' + window.location.host + '/forbiden_name/'+block_name, function (data) {
+			data = JSON.parse(data)
+			console.log(data['status'])
+			if (data['status'] == 'success') {
+				// alert('屏蔽成功')
+				let name_list = data['data']
+				let temp = ''
+				for(var i = 0; i < name_list.length; i++){
+					temp += '<dd><a href="javascript:;">' + name_list[i] + '</a></dd>'
+				}
+				$('.layui-nav-child').html(temp)
+				$('#block_name').val('')
+			}
+			else {
+				alert('屏蔽失败')
+			}
+		})
+	})
+</script>
+
+</body>
+</html>
