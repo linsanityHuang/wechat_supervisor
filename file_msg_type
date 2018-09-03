@@ -1,0 +1,38 @@
+MsgId 3183277025153368206
+FromUserName @696fb86324003f99743f574ba8b49ae576b838ff87c98e7d53ef6d662658ab45
+ToUserName @@6e46546e611d393882a753203b0d561cf4a455f86eba99fb694f8358697e065d
+MsgType 3
+Content <?xml version="1.0"?>
+<msg>
+	<img aeskey="adfa98240bf844538d2e335fa840a3d4" encryver="0" cdnthumbaeskey="adfa98240bf844538d2e335fa840a3d4" cdnthumburl="30570201000450304e0201000204d84cfd2d02032f4f560204b27ac2dc02045b8d6f390429777875706c6f61645f3431323634363634304063686174726f6f6d3539315f313533353939353730330204010438010201000400" cdnthumblength="3719" cdnthumbheight="120" cdnthumbwidth="67" cdnmidheight="0" cdnmidwidth="0" cdnhdheight="0" cdnhdwidth="0" cdnmidimgurl="30570201000450304e0201000204d84cfd2d02032f4f560204b27ac2dc02045b8d6f390429777875706c6f61645f3431323634363634304063686174726f6f6d3539315f313533353939353730330204010438010201000400" length="89867" cdnbigimgurl="30570201000450304e0201000204d84cfd2d02032f4f560204b27ac2dc02045b8d6f390429777875706c6f61645f3431323634363634304063686174726f6f6d3539315f313533353939353730330204010438010201000400" hdlength="718397" md5="192c476e06c27d80f478178d873ecc39" />
+</msg>
+
+Status 3
+ImgStatus 2
+CreateTime 1535995710
+VoiceLength 0
+PlayLength 0
+FileName 180904-012830.png
+FileSize
+MediaId
+Url
+AppMsgType 0
+StatusNotifyCode 0
+StatusNotifyUserName
+RecommendInfo {'UserName': '', 'NickName': '', 'QQNum': 0, 'Province': '', 'City': '', 'Content': '', 'Signature': '', 'Alias': '', 'Scene': 0, 'VerifyFlag': 0, 'AttrStatus': 0, 'Sex': 0, 'Ticket': '', 'OpCode': 0}
+ForwardFlag 0
+AppInfo {'AppID': '', 'Type': 0}
+HasProductId 0
+Ticket
+ImgHeight 120
+ImgWidth 67
+SubMsgType 0
+NewMsgId 3183277025153368206
+OriContent
+EncryFileName
+ActualNickName
+IsAt False
+ActualUserName @696fb86324003f99743f574ba8b49ae576b838ff87c98e7d53ef6d662658ab45
+User {'MemberList': <ContactList: []>, 'Uin': 0, 'UserName': '@@6e46546e611d393882a753203b0d561cf4a455f86eba99fb694f8358697e065d', 'NickName': '搞事三人行', 'HeadImgUrl': '/cgi-bin/mmwebwx-bin/webwxgetheadimg?seq=658732014&username=@@6e46546e611d393882a753203b0d561cf4a455f86eba99fb694f8358697e065d&skey=@crypt_40e16be6_f9c8401945380e6dbd6c0ba1167576e9', 'ContactFlag': 3, 'MemberCount': 3, 'RemarkName': '', 'HideInputBarFlag': 0, 'Sex': 0, 'Signature': '', 'VerifyFlag': 0, 'OwnerUin': 0, 'PYInitial': 'GSSRX', 'PYQuanPin': 'gaoshisanrenxing', 'RemarkPYInitial': '', 'RemarkPYQuanPin': '', 'StarFriend': 0, 'AppAccountFlag': 0, 'Statues': 1, 'AttrStatus': 0, 'Province': '', 'City': '', 'Alias': '', 'SnsFlag': 0, 'UniFriend': 0, 'DisplayName': '', 'ChatRoomId': 0, 'KeyWord': '', 'EncryChatRoomId': '', 'IsOwner': 0, 'IsAdmin': None, 'Self': <User: {'MemberList': <ContactList: []>, 'UserName': '@696fb86324003f99743f574ba8b49ae576b838ff87c98e7d53ef6d662658ab45', 'City': '', 'DisplayName': '', 'PYQuanPin': '', 'RemarkPYInitial': '', 'Province': '', 'KeyWord': '', 'RemarkName': '', 'PYInitial': '', 'EncryChatRoomId': '', 'Alias': '', 'Signature': 'be the good friend with time', 'NickName': '假装在火星', 'RemarkPYQuanPin': '', 'HeadImgUrl': '/cgi-bin/mmwebwx-bin/webwxgeticon?seq=1471154653&username=@696fb86324003f99743f574ba8b49ae576b838ff87c98e7d53ef6d662658ab45&skey=@crypt_40e16be6_f9c8401945380e6dbd6c0ba1167576e9', 'UniFriend': 0, 'Sex': 1, 'AppAccountFlag': 0, 'VerifyFlag': 0, 'ChatRoomId': 0, 'HideInputBarFlag': 0, 'AttrStatus': 0, 'SnsFlag': 145, 'MemberCount': 0, 'OwnerUin': 0, 'ContactFlag': 0, 'Uin': 2361306181, 'StarFriend': 0, 'Statues': 0, 'WebWxPluginSwitch': 0, 'HeadImgFlag': 1}>}
+Type Picture
+Text <function get_download_fn.<locals>.download_fn at 0x10b401158>

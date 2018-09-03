@@ -16,11 +16,13 @@ def background_thread():
 	redis_sub = obj.subscribe('chat_msg')  # 调用订阅方法
 	while True:
 		msg = redis_sub.parse_response()
-		print('msg', msg)
-		username = msg[2].split(':')[0]
+		chat_msg = json.loads(msg[2])
+		print('chat_msg', chat_msg)
+		# {'chatroom_name': '搞事三人行', 'msg_type': 'Text', 'username': '', 'content': '来来来'}
+		username = chat_msg['username']
 		if username in forbiden_name_list:
 			return
-		socketio.emit('test_message', {'data': msg[2]})
+		socketio.emit('test_message', {'data': chat_msg})
 
 # 客户端发送connect事件时的处理函数
 @socketio.on('test_connect')
