@@ -1,0 +1,8 @@
+# 运行环境
+# python 3.6.6
+# pip install -r requirements.txt
+# redis: stable 4.0.11
+# cd web_wechat
+# python itchat_utils.py 扫码登录微信
+# python app.py 启动web服务
+# 访问http://127.0.0.1:5000/
