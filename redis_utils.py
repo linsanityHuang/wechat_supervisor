@@ -23,6 +23,19 @@ class RedisHelper(object):
 		pub.parse_response()
 		return pub
 
+	def rpush(self, name, value):
+		'''
+		把微信用户发送的消息存在一个list中
+		'''
+		self.__conn.rpush(name, value)
+		return True
+
+	def lrange(self, name):
+		'''
+		获取历史消息列表
+		'''
+		return self.__conn.lrange(name, 0, -1)
+
 
 if __name__ == '__main__':
 	obj = RedisHelper()

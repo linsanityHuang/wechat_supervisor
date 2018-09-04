@@ -18,18 +18,9 @@
 						var layui_timeline = $('#msg_table')
 						let type = message.data['msg_type']
 						let item = ''
-						if (type == 'Picture') {
-							let msg = message.data['chatroom_name'] + '> '+ message.data['username'] + ': '
-							let pic = '<img src="' + 'http://127.0.0.1:5000/static/' + message.data['content'] + '" height="200" width="200">'
-							item = '<li class="layui-timeline-item">' +
-												'<div class="layui-timeline-content layui-text">' +
-												'<p>' + msg +'</p>' +
-												'<p>' + pic +'</p>' +
-												'</div>\n' +
-												'</li>'
-						}
-						else if (type == 'Text') {
-							let msg = message.data['chatroom_name'] + '> '+ message.data['username'] + ': ' + message.data['content']
+						if (type == 'Text') {
+							// message.data['chatroom_name'] + '> '+ 
+							let msg = message.data['username'] + ': ' + message.data['content']
 							item = '<li class="layui-timeline-item">' +
 												'<div class="layui-timeline-content layui-text">' +
 												'<p>' + msg +'</p>' +
@@ -37,6 +28,7 @@
 												'</li>'
 						}
 						layui_timeline.append(item)
+						scrollToEnd()
 				});
 
 				socket.on('connected',function(){
@@ -46,6 +38,17 @@
 				socket.on('disconnect', function () {
 						console.log('disconnect');
 				});
+
+				// 滚动到底部
+				function scrollToEnd() {
+					// console.log(1)
+				 //    var h = $(document).height()-$(window).height();
+				 //    $(document).scrollTop(h);
+				    var scrollDom = document.getElementById('layer_uq');
+				    if (scrollDom != null) {
+				        scrollDom.scrollTop = scrollDom.scrollHeight
+				    }
+				}
 		</script>
 		<link rel="stylesheet" href="static/css/layui.css">
 </head>
@@ -66,6 +69,7 @@
 			</li>
 			<li class="layui-nav-item"><input type="text" id="block_name" /></li>
 			<li class="layui-nav-item"><a id="block">屏蔽</a></li>
+			<li class="layui-nav-item"><a id="unblock">取消屏蔽</a></li>
 		</ul>
 	</div>
 	
@@ -74,10 +78,10 @@
 			<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
 			<ul class="layui-nav layui-nav-tree"  lay-filter="test">
 				<li class="layui-nav-item layui-nav-itemed">
-					<a class="" href="javascript:;">已屏蔽关键字或用户</a>
+					<a class="" href="javascript:;">已屏蔽用户</a>
 					<dl class="layui-nav-child">
-						{% for name in forbiden_name_list %}
-						<dd><a href="javascript:;">{{name}}</a></dd>
+						{% for name in forbiden_names %}
+							<dd><a href="javascript:;">{{name}}</a></dd>
 						{% endfor %}
 					</dl>
 				</li>
@@ -85,10 +89,18 @@
 		</div>
 	</div>
 	
-	<div class="layui-body">
+	<div class="layui-body" id="layer_uq">
 		<!-- 内容主体区域 -->
 		<!-- <div style="padding: 15px;">内容主体区域</div> -->
-		<ul class="layui-timeline" id="msg_table"></ul>
+		<ul class="layui-timeline" id="msg_table">
+			{% for item in history_msg %}
+				<li class="layui-timeline-item">
+					<div class="layui-timeline-content layui-text">
+							<p>{{item}}</p>
+					</div>
+				</li>
+			{% endfor %}
+		</ul>
 	</div>
 	
 	<!-- <div class="layui-footer">
@@ -106,7 +118,9 @@
 	});
 	$('#block').on('click', function(){
 		let block_name = $('#block_name').val()
-		console.log(block_name)
+		if (block_name == '' || block_name == null || block_name == undefined) {
+			return
+		}
 		$.get('http://' + window.location.host + '/forbiden_name/'+block_name, function (data) {
 			data = JSON.parse(data)
 			console.log(data['status'])
@@ -122,6 +136,28 @@
 			}
 			else {
 				alert('屏蔽失败')
+			}
+		})
+	})
+	$('#unblock').on('click', function(){
+		let block_name = $('#block_name').val()
+		if (block_name == '' || block_name == null || block_name == undefined) {
+			return
+		}
+		$.get('http://' + window.location.host + '/unforbiden_name/'+block_name, function (data) {
+			data = JSON.parse(data)
+			console.log(data['status'])
+			if (data['status'] == 'success') {
+				let name_list = data['data']
+				let temp = ''
+				for(var i = 0; i < name_list.length; i++){
+					temp += '<dd><a href="javascript:;">' + name_list[i] + '</a></dd>'
+				}
+				$('.layui-nav-child').html(temp)
+				$('#block_name').val('')
+			}
+			else {
+				alert('取消屏蔽失败')
 			}
 		})
 	})
