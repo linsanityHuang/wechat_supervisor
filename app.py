@@ -26,14 +26,17 @@ def background_thread():
 		if redis.sismember('forbiden_names', username):
 			continue
 		# 过滤重复消息
+		# 只根据用户发送的消息过滤
 		contents = redis.lrange('wechat_msg')
 		# print(contents)
-		if str((username, chat_msg['content'])) in contents:
+		if chat_msg['content'] in contents:
 			continue
 		# 已发送的消息放在判断重复的集合中
 		# 把用户的名称放进去，加载历史消息的时候展示
-		redis.rpush('wechat_msg', (username, chat_msg['content']))
+		redis.rpush('wechat_msg', chat_msg['content'])
 		socketio.emit('test_message', {'data': chat_msg})
+		with open('history_msg.txt', 'a+') as f:
+			f.writelines(username + ': ' + chat_msg['content'] +'\n')
 
 # 客户端发送connect事件时的处理函数
 @socketio.on('test_connect')
@@ -51,15 +54,8 @@ import re
 @app.route("/")
 def handle_mes():
 	# 从Redis中获取历史消息
-	contents = redis.lrange('wechat_msg')
-	history_msg = []
-	for content in contents:
-		# 提起姓名和消息
-		# ('假装在火星', '还吃的多')
-		pattern_res = re.findall(r'\'(.+?)\'', content)
-		history_msg.append(pattern_res[0] + ': ' + pattern_res[1])
 	forbiden_names = redis.smembers('forbiden_names')
-	return render_template("index.html", forbiden_names=forbiden_names, history_msg=history_msg)
+	return render_template("index.html", forbiden_names=forbiden_names)
 
 # 屏蔽用户消息
 @app.route('/forbiden_name/<username>')
