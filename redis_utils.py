@@ -36,6 +36,32 @@ class RedisHelper(object):
 		'''
 		return self.__conn.lrange(name, 0, -1)
 
+	def sadd(self, name, value):
+		'''
+		添加用户名到set集合
+		'''
+		self.__conn.sadd(name, value)
+		return True
+
+	def smembers(self, name):
+		'''
+		获取集合的元素
+		'''
+		return self.__conn.smembers(name)
+
+	def sismember(self, name, value):
+		'''
+		判断是否是集合的成员
+		'''
+		return self.__conn.sismember(name, value)
+
+	def srem(self, name, value):
+		'''
+		删除集合中的元素
+		'''
+		self.__conn.srem(name, value)
+		return True
+
 
 if __name__ == '__main__':
 	obj = RedisHelper()

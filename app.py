@@ -23,7 +23,7 @@ def background_thread():
 		print('chat_msg', chat_msg)
 		# {'chatroom_name': '搞事三人行', 'msg_type': 'Text', 'username': '', 'content': '来来来'}
 		username = chat_msg['username']
-		if username in set(forbiden_names):
+		if redis.sismember('forbiden_names', username):
 			continue
 		# 过滤重复消息
 		contents = redis.lrange('wechat_msg')
@@ -52,23 +52,22 @@ import re
 def handle_mes():
 	# 从Redis中获取历史消息
 	contents = redis.lrange('wechat_msg')
-	print('历史消息')
 	history_msg = []
 	for content in contents:
 		# 提起姓名和消息
 		# ('假装在火星', '还吃的多')
 		pattern_res = re.findall(r'\'(.+?)\'', content)
 		history_msg.append(pattern_res[0] + ': ' + pattern_res[1])
-	print(history_msg)
+	forbiden_names = redis.smembers('forbiden_names')
 	return render_template("index.html", forbiden_names=forbiden_names, history_msg=history_msg)
 
 # 屏蔽用户消息
 @app.route('/forbiden_name/<username>')
 def forbiden_name(username):
-	global forbiden_names
 	print('username', username)
-	if username is not None and username not in forbiden_names:
-		forbiden_names.append(username)
+	if username is not None and not redis.sismember('forbiden_names', username):
+		redis.sadd('forbiden_names', username)
+	forbiden_names = redis.smembers('forbiden_names')
 	result = dict(
 			status='success',
 			data=tuple(forbiden_names),
@@ -78,10 +77,10 @@ def forbiden_name(username):
 # 取消屏蔽
 @app.route('/unforbiden_name/<username>')
 def unforbiden_name(username):
-	global forbiden_names
 	print('username', username)
-	if username is not None and username in forbiden_names:
-		forbiden_names.remove(username)
+	if username is not None and redis.sismember('forbiden_names', username):
+		redis.srem('forbiden_names', username)
+	forbiden_names = redis.smembers('forbiden_names')
 	result = dict(
 			status='success',
 			data=tuple(forbiden_names),
