@@ -2,10 +2,11 @@ import itchat
 from itchat.content import *
 import sys
 from redis_utils import RedisHelper
-import os, shutil, json
+import json
 
 sys.path.append('./')
 obj = RedisHelper()
+
 
 # 自动回复文本等类别的群聊消息
 # isGroupChat=True表示为群聊消息
@@ -36,6 +37,7 @@ def group_reply_text(msg):
 		obj.publish('chat_msg', json.dumps(chat_msg))
 	except Exception as e:
 		raise e
+
 
 # 扫二维码登录
 itchat.auto_login(hotReload=True)

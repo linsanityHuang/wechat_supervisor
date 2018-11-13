@@ -17,8 +17,8 @@
 						// {chatroom_name: "搞事三人行", msg_type: "Text", username: "搞事三人行", content: "哦哦哦"}
 						var layui_timeline = $('#msg_table')
 						let type = message.data['msg_type']
-						let item = ''
-						if (type == 'Text') {
+						let item = '';
+						if (type === 'Text') {
 							// message.data['chatroom_name'] + '> '+ 
 							let msg = message.data['username'] + ': ' + message.data['content']
 							item = '<li class="layui-timeline-item">' +
@@ -131,16 +131,16 @@
 				alert('屏蔽失败')
 			}
 		})
-	})
+	});
 	$('#unblock').on('click', function(){
-		let block_name = $('#block_name').val()
-		if (block_name == '' || block_name == null || block_name == undefined) {
+		let block_name = $('#block_name').val();
+		if (block_name === '' || block_name == null || block_name === undefined) {
 			return
 		}
 		$.get('http://' + window.location.host + '/unforbiden_name/'+block_name, function (data) {
 			data = JSON.parse(data)
 			console.log(data['status'])
-			if (data['status'] == 'success') {
+			if (data['status'] === 'success') {
 				let name_list = data['data']
 				let temp = ''
 				for(var i = 0; i < name_list.length; i++){
@@ -155,6 +155,5 @@
 		})
 	})
 </script>
-
 </body>
 </html>

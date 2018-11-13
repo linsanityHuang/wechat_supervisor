@@ -2,7 +2,6 @@ import json
 from flask import Flask, render_template
 from flask_socketio import SocketIO
 from redis_utils import RedisHelper
-import time
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -35,8 +34,9 @@ def background_thread():
 		# 把用户的名称放进去，加载历史消息的时候展示
 		redis.rpush('wechat_msg', chat_msg['content'])
 		socketio.emit('test_message', {'data': chat_msg})
-		with open('history_msg.txt', 'a+') as f:
+		with open('history_msg.txt', 'a+', encoding='utf-8') as f:
 			f.writelines(username + ': ' + chat_msg['content'] +'\n')
+
 
 # 客户端发送connect事件时的处理函数
 @socketio.on('test_connect')
@@ -50,12 +50,12 @@ def connect(message):
 
 
 # 通过访问http://127.0.0.1:5000/访问index.html
-import re
 @app.route("/")
 def handle_mes():
-	# 从Redis中获取历史消息
+	# 访问首页的时候从Redis中获取历史消息，加载到页面上
 	forbiden_names = redis.smembers('forbiden_names')
 	return render_template("index.html", forbiden_names=forbiden_names)
+
 
 # 屏蔽用户消息
 @app.route('/forbiden_name/<username>')
@@ -70,6 +70,7 @@ def forbiden_name(username):
 		)
 	return json.dumps(result, ensure_ascii=False)
 
+
 # 取消屏蔽
 @app.route('/unforbiden_name/<username>')
 def unforbiden_name(username):
@@ -82,6 +83,8 @@ def unforbiden_name(username):
 			data=tuple(forbiden_names),
 		)
 	return json.dumps(result, ensure_ascii=False)
+
+
 # main函数
 if __name__ == '__main__':
 	socketio.run(app, debug=True)

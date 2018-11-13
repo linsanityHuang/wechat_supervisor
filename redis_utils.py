@@ -1,10 +1,11 @@
 import redis
-import random, time
+import time
+
 
 class RedisHelper(object):
 	def __init__(self):
 		# self.__conn = redis.Redis(host='192.168.21.61',port=6379, password='123456Hb')#连接Redis
-		self.__conn = redis.Redis(host='127.0.0.1', port=6379, decode_responses=True)
+		self.__conn = redis.Redis(host='127.0.0.1', port=6379, db=1, decode_responses=True)
 
 	def publish(self, channel, msg):
 		'''
@@ -25,7 +26,7 @@ class RedisHelper(object):
 
 	def rpush(self, name, value):
 		'''
-		把微信用户发送的消息存在一个list中
+		把微信用户发送的消息存在一个list的右端
 		'''
 		self.__conn.rpush(name, value)
 		return True
@@ -66,7 +67,14 @@ class RedisHelper(object):
 if __name__ == '__main__':
 	obj = RedisHelper()
 
-	while True:
-		time.sleep(1)
-		print('publish')
-		obj.publish('test1', '你哈')
+	# while True:
+	# 	time.sleep(1)
+	# 	print('publish')
+	# 	obj.publish('test1', '你哈')
+	obj.rpush('history_msg', ['huang', 'ahah'])
+
+	result = obj.lrange('history_msg')
+	import json
+	for item in result:
+		print(item)
+		print(type(item))
